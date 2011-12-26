@@ -1,0 +1,12 @@
+snippet vars "variable_set()"
+variable_set('${1:var_name}', ${2:value})$0
+endsnippet
+
+snippet func "function()"
+/**
+ * ${3:Comment}
+ */
+function `!p snip.rv=snip.basename`_${1:function_name}(${2:args}) {
+  $0
+}
+endsnippet
