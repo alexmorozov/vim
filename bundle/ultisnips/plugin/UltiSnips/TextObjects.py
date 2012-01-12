@@ -7,11 +7,14 @@ import stat
 import tempfile
 import vim
 
-from UltiSnips.Util import IndentUtil
 from UltiSnips.Buffer import TextBuffer
+from UltiSnips.Compatibility import CheapTotalOrdering
+from UltiSnips.Compatibility import compatible_exec, as_unicode
 from UltiSnips.Geometry import Span, Position
-from UltiSnips.Lexer import tokenize, EscapeCharToken, TransformationToken,  \
-    TabStopToken, MirrorToken, PythonCodeToken, VimLCodeToken, ShellCodeToken
+from UltiSnips.Lexer import tokenize, EscapeCharToken, VisualToken, \
+    TransformationToken, TabStopToken, MirrorToken, PythonCodeToken, \
+    VimLCodeToken, ShellCodeToken
+from UltiSnips.Util import IndentUtil
 
 __all__ = [ "Mirror", "Transformation", "SnippetInstance", "StartMarker" ]
 
@@ -28,6 +31,7 @@ class _CleverReplace(object):
     _CONDITIONAL = re.compile(r"\(\?(\d+):", re.DOTALL)
 
     _UNESCAPE = re.compile(r'\\[^ntrab]')
+    _SCHARS_ESCPAE = re.compile(r'\\[ntrab]')
 
     def __init__(self, s):
         self._s = s
@@ -95,6 +99,9 @@ class _CleverReplace(object):
 
     def _unescape(self, v):
         return self._UNESCAPE.subn(lambda m: m.group(0)[-1], v)[0]
+    def _schar_escape(self, v):
+        return self._SCHARS_ESCPAE.subn(lambda m: eval(r"'\%s'" % m.group(0)[-1]), v)[0]
+
     def replace(self, match):
         start, end = match.span()
 
@@ -108,7 +115,7 @@ class _CleverReplace(object):
         tv = self._LONG_CASEFOLDINGS.subn(self._lcase_folding, tv)[0]
         tv = self._replace_conditional(match, tv)
 
-        return self._unescape(tv.decode("string-escape"))
+        return self._unescape(self._schar_escape(tv))
 
 class _TOParser(object):
     def __init__(self, parent_to, text, indent):
@@ -142,7 +149,7 @@ class _TOParser(object):
         for parent, token in all_tokens:
             if isinstance(token, TransformationToken):
                 if token.no not in seen_ts:
-                    raise RuntimeError("Tabstop %i is not known but is used by a Transformation" % t._ts)
+                    raise RuntimeError("Tabstop %i is not known but is used by a Transformation" % token.no)
                 Transformation(parent, seen_ts[token.no], token)
 
     def _do_parse(self, all_tokens, seen_ts):
@@ -160,6 +167,8 @@ class _TOParser(object):
                 k._do_parse(all_tokens, seen_ts)
             elif isinstance(token, EscapeCharToken):
                 EscapedChar(self._parent_to, token)
+            elif isinstance(token, VisualToken):
+                Visual(self._parent_to, token)
             elif isinstance(token, ShellCodeToken):
                 ShellCode(self._parent_to, token)
             elif isinstance(token, PythonCodeToken):
@@ -167,12 +176,10 @@ class _TOParser(object):
             elif isinstance(token, VimLCodeToken):
                 VimLCode(self._parent_to, token)
 
-
-
 ###########################################################################
 #                             Public classes                              #
 ###########################################################################
-class TextObject(object):
+class TextObject(CheapTotalOrdering):
     """
     This base class represents any object in the text
     that has a span in any ways
@@ -198,14 +205,14 @@ class TextObject(object):
         self._cts = 0
 
     def __cmp__(self, other):
-        return cmp(self._start, other._start)
+        return self._start.__cmp__(other._start)
 
     ##############
     # PROPERTIES #
     ##############
     def current_text():
         def fget(self):
-            return str(self._current_text)
+            return as_unicode(self._current_text)
         def fset(self, text):
             self._current_text = TextBuffer(text)
 
@@ -259,11 +266,8 @@ class TextObject(object):
     # Public functions #
     ####################
     def update(self):
-        def _update_childs(only_those = ()):
-            for idx,c in enumerate(self._childs):
-                if only_those and not isinstance(c, only_those):
-                    continue
-
+        def _update_childs(childs):
+            for idx,c in childs:
                 oldend = Position(c.end.line, c.end.col)
 
                 new_end = c.update()
@@ -276,8 +280,8 @@ class TextObject(object):
                 self._move_textobjects_behind(c.start, oldend, moved_lines,
                             moved_cols, idx)
 
-        _update_childs((TabStop,))
-        _update_childs()
+        _update_childs((idx, c) for idx, c in enumerate(self._childs) if isinstance(c, TabStop))
+        _update_childs((idx, c) for idx, c in enumerate(self._childs) if not isinstance(c, TabStop))
 
         self._do_update()
 
@@ -419,6 +423,34 @@ class Mirror(TextObject):
     def __repr__(self):
         return "Mirror(%s -> %s)" % (self._start, self._end)
 
+class Visual(TextObject):
+    """
+    A ${VISUAL} placeholder that will use the text that was last visually
+    selected and insert it here. If there was no text visually selected,
+    this will be the empty string
+    """
+    def __init__(self, parent, token):
+
+        # Find our containing snippet for visual_content
+        snippet = parent
+        while snippet and not isinstance(snippet, SnippetInstance):
+            snippet = snippet._parent
+
+        text = ""
+        for idx, line in enumerate(snippet.visual_content.splitlines(True)):
+            text += token.leading_whitespace
+            text += line
+
+        self._text = text
+
+        TextObject.__init__(self, parent, token, initial_text = self._text)
+
+    def _do_update(self):
+        self.current_text = self._text
+
+    def __repr__(self):
+        return "Visual(%s -> %s)" % (self._start, self._end)
+
 
 class Transformation(Mirror):
     def __init__(self, parent, ts, token):
@@ -449,7 +481,7 @@ class ShellCode(TextObject):
 
         # Write the code to a temporary file
         handle, path = tempfile.mkstemp(text=True)
-        os.write(handle, code)
+        os.write(handle, code.encode("utf-8"))
         os.close(handle)
 
         os.chmod(path, stat.S_IRWXU)
@@ -477,7 +509,7 @@ class VimLCode(TextObject):
         TextObject.__init__(self, parent, token)
 
     def _do_update(self):
-        self.current_text = str(vim.eval(self._code))
+        self.current_text = as_unicode(vim.eval(self._code))
 
     def __repr__(self):
         return "VimLCode(%s -> %s)" % (self._start, self._end)
@@ -647,7 +679,7 @@ class PythonCode(TextObject):
 
         self._globals = {}
         globals = snippet.globals.get("!p", [])
-        exec "\n".join(globals).replace("\r\n", "\n") in self._globals
+        compatible_exec("\n".join(globals).replace("\r\n", "\n"), self._globals)
 
         # Add Some convenience to the code
         self._code = "import re, os, vim, string, random\n" + code
@@ -675,12 +707,12 @@ class PythonCode(TextObject):
         })
 
         self._code = self._code.replace("\r\n", "\n")
-        exec self._code in self._globals, local_d
+        compatible_exec(self._code, self._globals, local_d)
 
         if self._snip._rv_changed:
             self.current_text = self._snip.rv
         else:
-            self.current_text = str(local_d["res"])
+            self.current_text = as_unicode(local_d["res"])
 
     def __repr__(self):
         return "PythonCode(%s -> %s)" % (self._start, self._end)
@@ -714,7 +746,7 @@ class SnippetInstance(TextObject):
     also a TextObject because it has a start an end
     """
 
-    def __init__(self, parent, indent, initial_text, start = None, end = None, last_re = None, globals = None):
+    def __init__(self, parent, indent, initial_text, start, end, visual_content, last_re, globals):
         if start is None:
             start = Position(0,0)
         if end is None:
@@ -722,6 +754,7 @@ class SnippetInstance(TextObject):
 
         self.locals = {"match" : last_re}
         self.globals = globals
+        self.visual_content = visual_content
 
         TextObject.__init__(self, parent, start, end, initial_text)
 
