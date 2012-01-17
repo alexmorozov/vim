@@ -42,13 +42,7 @@ set bs=2 " Backspace, this is the same as :set backspace=indent,eol,start.
 set autoindent
 set smartindent
 
-" Navigate between code blocks assuming that curly brackets are not in the first column.
-map [[ ?{<CR>w99[{
-map ][ /}<CR>b99]}
-map ]] j0[[%/{<CR>
-map [] k$][%?}<CR>
-
-set tags=tags;/
+set tags=ctags;/
 set encoding=utf-8
 
 " activer l'omnicompletion pour tous les langages
