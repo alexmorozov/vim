@@ -10,7 +10,7 @@ colorscheme wombat256
 
 set number
 set ruler
-set scrolloff=5 " Show 5 lines above/below the cursor when scrolling.
+"set scrolloff=5 " Show 5 lines above/below the cursor when scrolling.
 
 set hlsearch
 set wrapscan
@@ -55,7 +55,6 @@ let php_parent_error_close = 1
 " help for commenting functions
 set syntax=php.doxygen
 
-
 " Folding options
 set foldmethod=indent   "fold based on indent
 set foldnestmax=1      "deepest fold is 1 level
@@ -76,3 +75,7 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Russian mapping for normal mode
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
+
+map ,q <plug>NERDCommenterToggle
+" Make tag jumper ask when where are multiple identifiers
+noremap  <C-]> g<C-]>
