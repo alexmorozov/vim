@@ -79,3 +79,5 @@ set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNO
 map ,q <plug>NERDCommenterToggle
 " Make tag jumper ask when where are multiple identifiers
 noremap  <C-]> g<C-]>
+" Disable highlighting of search terms
+noremap ,n :noh<CR>
