@@ -67,6 +67,21 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
+" taglist need to know where our ctags bin is located
+let Tlist_Ctags_Cmd='/usr/bin/ctags'
+"F12 toogle taglist buffer
+nnoremap <silent> <F8> :TlistToggle<CR>
+" show taglist at the right of the screen
+let Tlist_Use_Right_Window=1
+" Only print tags for current buffer
+let Tlist_Show_One_File=1
+" min width for taglist buffer. Drupal functions name are usually pretty long
+let Tlist_WinWidth=50
+" only print constants, class and functions in our taglist
+let tlist_php_settings = 'php;d:Constants;c:Classes;f:Functions'
+" Jump to tag list on open
+let Tlist_GainFocus_On_ToggleOpen=1
+
 " Ultisnips settings
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 let g:UltiSnipsExpandTrigger="<tab>"
