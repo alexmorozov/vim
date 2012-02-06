@@ -70,7 +70,7 @@ au InsertLeave * match ExtraWhiteSpace /\s\+$/
 " taglist need to know where our ctags bin is located
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 "F12 toogle taglist buffer
-nnoremap <silent> <F12> :TlistToggle<CR>
+nnoremap <silent> <F8> :TlistToggle<CR>
 " show taglist at the right of the screen
 let Tlist_Use_Right_Window=1
 " Only print tags for current buffer
