@@ -79,6 +79,8 @@ let Tlist_Show_One_File=1
 let Tlist_WinWidth=50
 " only print constants, class and functions in our taglist
 let tlist_php_settings = 'php;d:Constants;c:Classes;f:Functions'
+" Jump to tag list on open
+let Tlist_GainFocus_On_ToggleOpen=1
 
 " Ultisnips settings
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
