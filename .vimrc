@@ -96,3 +96,6 @@ map ,q <plug>NERDCommenterToggle
 noremap  <C-]> g<C-]>
 " Disable highlighting of search terms
 noremap ,n :noh<CR>
+" Window switching
+map <C-j> <C-W>j<C-W>_
+map <C-k> <C-W>k<C-W>_
