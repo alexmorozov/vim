@@ -16,6 +16,7 @@ set hlsearch
 set wrapscan
 set ignorecase
 set smartcase
+set paste
 syntax on
 
 filetype plugin on
