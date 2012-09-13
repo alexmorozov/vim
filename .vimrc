@@ -32,6 +32,7 @@ augroup drupal
   autocmd BufRead,BufNewFile *.profile set filetype=php
   autocmd BufRead,BufNewFile *.test set filetype=php
   autocmd BufRead,BufNewFile *.info set filetype=php
+  autocmd BufRead,BufNewFile *.drush set filetype=php
 augroup END
 
 " indentation settings
@@ -68,6 +69,12 @@ au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhiteSpace /\s\+$/
 
+" Showmarks colors
+highlight ShowMarksHLl ctermfg=255 ctermbg=248 guibg=#242424
+highlight ShowMarksHLu ctermfg=255 ctermbg=248 guibg=#242424
+highlight ShowMarksHLo ctermfg=255 ctermbg=248 guibg=#242424
+highlight ShowMarksHLm ctermfg=255 ctermbg=248 guibg=#242424
+
 " taglist need to know where our ctags bin is located
 let Tlist_Ctags_Cmd='/usr/bin/ctags'
 "F12 toogle taglist buffer
@@ -97,6 +104,9 @@ map ,q <plug>NERDCommenterToggle
 noremap  <C-]> g<C-]>
 " Disable highlighting of search terms
 noremap ,n :noh<CR>
+"
 " Window switching
-map <C-j> <C-W>j<C-W>_
-map <C-k> <C-W>k<C-W>_
+map h <C-W>h
+map j <C-W>j
+map k <C-W>k
+map l <C-W>l
