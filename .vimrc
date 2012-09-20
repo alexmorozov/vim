@@ -97,15 +97,27 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Russian mapping for normal mode
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
-
 map ,q <plug>NERDCommenterToggle
 " Make tag jumper ask when where are multiple identifiers
 noremap  <C-]> g<C-]>
 " Disable highlighting of search terms
 noremap ,n :noh<CR>
-"
-" Window switching
-map h <C-W>h
-map j <C-W>j
-map k <C-W>k
-map l <C-W>l
+
+" Window switching, resizing and moving
+" Alt+key switches to the window
+map <A-h> <C-W>h
+map <A-j> <C-W>j
+map <A-k> <C-W>k
+map <A-l> <C-W>l
+
+" Alt+Shift+key moves the window
+map <A-S-H> <C-W>H
+map <A-S-J> <C-W>J
+map <A-S-K> <C-W>K
+map <A-S-L> <C-W>L
+
+" Keypad resizes the windows
+map <C-A-k> <C-W>+
+map <C-A-j> <C-W>-
+map <C-A-l> <c-w><
+map <C-A-h> <c-w>>
