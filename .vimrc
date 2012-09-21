@@ -10,6 +10,8 @@ colorscheme wombat256
 
 set number
 set ruler
+set cursorline
+set cursorcolumn
 "set scrolloff=5 " Show 5 lines above/below the cursor when scrolling.
 
 set hlsearch
