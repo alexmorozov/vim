@@ -108,18 +108,26 @@ noremap ,n :noh<CR>
 " Window switching, resizing and moving
 " Alt+key switches to the window
 map <A-h> <C-W>h
+map h <C-W>h
 map <A-j> <C-W>j
+map j <C-W>j
 map <A-k> <C-W>k
+map k <C-W>k
 map <A-l> <C-W>l
+map l <C-W>l
 
 " Alt+Shift+key moves the window
 map <A-S-H> <C-W>H
+map H <C-W>H
 map <A-S-J> <C-W>J
+map J <C-W>J
 map <A-S-K> <C-W>K
+map K <C-W>K
 map <A-S-L> <C-W>L
+map L <C-W>L
 
 " Keypad resizes the windows
-map <C-A-k> <C-W>+
-map <C-A-j> <C-W>-
-map <C-A-l> <c-w><
-map <C-A-h> <c-w>>
+map Om <C-W>+
+map OS <C-W>-
+map <F2> <c-w><
+map <F3> <c-w>>
