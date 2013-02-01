@@ -122,11 +122,11 @@ com! -nargs=0 ShowMarksClearAll  :call <sid>ShowMarksClearAll()
 com! -nargs=0 ShowMarksPlaceMark :call <sid>ShowMarksPlaceMark()
 
 " Mappings (NOTE: Leave the '|'s immediately following the '<cr>' so the mapping does not contain any trailing spaces!)
-if !hasmapto( '<Plug>ShowmarksShowMarksToggle' ) | map <silent> <unique> <leader>mt :ShowMarksToggle<cr>|    endif
-if !hasmapto( '<Plug>ShowmarksShowMarksOn'     ) | map <silent> <unique> <leader>mo :ShowMarksOn<cr>|        endif
-if !hasmapto( '<Plug>ShowmarksClearMark'       ) | map <silent> <unique> <leader>mh :ShowMarksClearMark<cr>| endif
-if !hasmapto( '<Plug>ShowmarksClearAll'        ) | map <silent> <unique> <leader>ma :ShowMarksClearAll<cr>|  endif
-if !hasmapto( '<Plug>ShowmarksPlaceMark'       ) | map <silent> <unique> <leader>mm :ShowMarksPlaceMark<cr>| endif
+"if !hasmapto( '<Plug>ShowmarksShowMarksToggle' ) | map <silent> <unique> <leader>mt :ShowMarksToggle<cr>|    endif
+"if !hasmapto( '<Plug>ShowmarksShowMarksOn'     ) | map <silent> <unique> <leader>mo :ShowMarksOn<cr>|        endif
+"if !hasmapto( '<Plug>ShowmarksClearMark'       ) | map <silent> <unique> <leader>mh :ShowMarksClearMark<cr>| endif
+"if !hasmapto( '<Plug>ShowmarksClearAll'        ) | map <silent> <unique> <leader>ma :ShowMarksClearAll<cr>|  endif
+"if !hasmapto( '<Plug>ShowmarksPlaceMark'       ) | map <silent> <unique> <leader>mm :ShowMarksPlaceMark<cr>| endif
 noremap <unique> <script> \sm m
 noremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
 
@@ -139,10 +139,31 @@ if g:showmarks_enable == 1
 endif
 
 " Highlighting: Setup some nice colours to show the mark positions.
-hi default ShowMarksHLl ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
-hi default ShowMarksHLu ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
-hi default ShowMarksHLo ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
-hi default ShowMarksHLm ctermfg=darkblue ctermbg=blue cterm=bold guifg=blue guibg=lightblue gui=bold
+hi default ShowMarksHLl ctermfg=darkblue ctermbg=0 guifg=blue guibg=lightblue gui=bold
+hi default ShowMarksHLu ctermfg=darkblue ctermbg=0 guifg=blue guibg=lightblue gui=bold
+hi default ShowMarksHLo ctermfg=darkblue ctermbg=0 guifg=blue guibg=lightblue gui=bold
+hi default ShowMarksHLm ctermfg=darkblue ctermbg=0 guifg=blue guibg=lightblue gui=bold
+" without marks 
+"hi SignColumn ctermbg=0
+
+" Function: GetMarkLine()
+" Authors: Easwy Yang
+" Description: This function will return the line number where the mark
+" placed. In VIM 7.0 and later, function line() always returns line number but
+" not 0 in case an uppercase mark or number mark is placed. However, in VIM 6,
+" it only returns 0 when the uppercase mark isn't placed in current file.
+fun! s:GetMarkLine(mark)
+    if v:version < 700
+        let lnum = line(a:mark)
+    else
+        let pos = getpos(a:mark)
+        let lnum = pos[1]
+        if pos[0] && bufnr("%") != pos[0]
+            let lnum = 0
+        endif
+    endif
+    return lnum
+endf
 
 " Function: IncludeMarks()
 " Description: This function returns the list of marks (in priority order) to
@@ -354,7 +375,8 @@ fun! s:ShowMarks()
 		let c = strpart(s:IncludeMarks(), n, 1)
 		let nm = s:NameOfMark(c)
 		let id = n + (s:maxmarks * winbufnr(0))
-		let ln = line("'".c)
+		"let ln = line("'".c)
+		let ln = s:GetMarkLine("'".c)
 
 		if ln == 0 && (exists('b:placed_'.nm) && b:placed_{nm} != ln)
 			exe 'sign unplace '.id.' buffer='.winbufnr(0)
@@ -393,11 +415,18 @@ fun! s:ShowMarksClearMark()
 	let s:maxmarks = strlen(s:IncludeMarks())
 	while n < s:maxmarks
 		let c = strpart(s:IncludeMarks(), n, 1)
-		if c =~# '[a-zA-Z]' && ln == line("'".c)
+		"if c =~# '[a-zA-Z]' && ln == line("'".c)
+		if c =~# '[a-zA-Z]' && ln == s:GetMarkLine("'".c)
 			let nm = s:NameOfMark(c)
 			let id = n + (s:maxmarks * winbufnr(0))
 			exe 'sign unplace '.id.' buffer='.winbufnr(0)
-			exe '1 mark '.c
+            " Easwy, we can really remove marks in VIM 7.0 and later
+            if v:version >= 700
+                exe 'delm '.c
+            else
+                exe '1 mark '.c
+            endif
+            " Easwy, end
 			let b:placed_{nm} = 1
 		endif
 		let n = n + 1
@@ -417,7 +446,13 @@ fun! s:ShowMarksClearAll()
 			let nm = s:NameOfMark(c)
 			let id = n + (s:maxmarks * winbufnr(0))
 			exe 'sign unplace '.id.' buffer='.winbufnr(0)
-			exe '1 mark '.c
+            " Easwy, we can really remove marks in VIM 7.0 and later
+            if v:version >= 700
+                exe 'delm '.c
+            else
+                exe '1 mark '.c
+            endif
+            " Easwy, end
 			let b:placed_{nm} = 1
 		endif
 		let n = n + 1
@@ -466,7 +501,8 @@ fun! s:ShowMarksPlaceMark()
 	while n < s:maxmarks
 		let c = strpart(s:IncludeMarks(), n, 1)
 		if c =~# '[a-z]'
-			if line("'".c) <= 1
+			"if line("'".c) <= 1
+			if s:GetMarkLine("'".c) <= 1
 				" Found an unused [a-z] mark; we're done.
 				let next_mark = n
 				break

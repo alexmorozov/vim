@@ -44,6 +44,7 @@ set softtabstop=2
 set bs=2 " Backspace, this is the same as :set backspace=indent,eol,start.
 set autoindent
 set smartindent
+set showbreak=>\ 
 
 set tags=ctags;/
 set encoding=utf-8
@@ -131,3 +132,37 @@ map Om <C-W>+
 map OS <C-W>-
 map <F2> <c-w><
 map <F3> <c-w>>
+
+" Switch buffers on Tab
+noremap <Tab> :bn<CR>
+" Alt-<num> switches to corresponding buffer
+map <A-1> :b1<CR>
+map 1 :b1<CR>
+map <A-2> :b2<CR>
+map 2 :b2<CR>
+map <A-3> :b3<CR>
+map 3 :b3<CR>
+map <A-4> :b4<CR>
+map 4 :b4<CR>
+map <A-5> :b5<CR>
+map 5 :b5<CR>
+map <A-6> :b6<CR>
+map 6 :b6<CR>
+map <A-7> :b7<CR>
+map 7 :b7<CR>
+map <A-8> :b8<CR>
+map 8 :b8<CR>
+map <A-9> :b9<CR>
+map 9 :b9<CR>
+map <A-0> :b10<CR>
+map 0 :b10<CR>
+
+" Piece-wise copying of the line above.
+" Stolen at http://www.slideshare.net/ZendCon/vim-for-php-programmers-presentation
+imap <C-l> @@@<ESC>hhkywjl?@@@<CR>P/@@@<CR>3s
+
+" Showmarks configuration
+let g:showmarks_enable=0
+let g:showmarks_textlower="\t"
+let g:showmarks_textother="\t"
+let g:showmarks_textupper="\t"
