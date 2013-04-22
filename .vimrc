@@ -36,6 +36,8 @@ augroup drupal
   autocmd BufRead,BufNewFile *.drush set filetype=php
 augroup END
 
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+
 " indentation settings
 set expandtab
 set tabstop=2

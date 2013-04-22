@@ -18,7 +18,7 @@ endsnippet
 # Hooks
 snippet hook_install "hook_install()"
 /**
- * Implementation of hook_install().
+ * Реализация hook_install().
  */
 function `!p snip.rv=snip.basename`_install() {
   ${0:// code}
@@ -27,7 +27,7 @@ endsnippet
 
 snippet hook_update "hook_update_N()"
 /**
- * Implementation of hook_update_N().
+ * Реализация hook_update_N().
  */
 function `!p snip.rv=snip.basename`_update_${1:7000}(&$sandbox) {
   ${0:// code}
@@ -36,7 +36,7 @@ endsnippet
 
 snippet hook_init "hook_init()"
 /**
- * Implementation of hook_init().
+ * Реализация hook_init().
  */
 function `!p snip.rv=snip.basename`_init() {
   ${0:// code}
@@ -45,7 +45,7 @@ endsnippet
 
 snippet hook_menu "hook_menu()"
 /**
- * Implementation of hook_menu()
+ * Реализация hook_menu()
  */
 function `!p snip.rv=snip.basename`_menu() {
   $${1:items} = array();
@@ -56,6 +56,24 @@ function `!p snip.rv=snip.basename`_menu() {
     'page arguments' => array(${5:1}),
     'access arguments' => array('${6:access content}'),
     'type' => ${7:MENU_CALLBACK},
+  );
+
+  ${0: // other items}
+
+  return $$1;
+}
+endsnippet
+
+snippet hook_theme "hook_theme()"
+/**
+ * Реализация hook_theme()
+ */
+function `!p snip.rv=snip.basename`_theme() {
+  $${1:items} = array();
+
+  $$1['${2:theme_id}'] = array(
+    'template' => '${3:template-name}',
+    'arguments' => array(${4}),
   );
 
   ${0: // other items}

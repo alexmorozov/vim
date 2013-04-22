@@ -5,12 +5,18 @@ endsnippet
 snippet array "array(...)" !
 array(
   '$1' => $2,
-  $0
+  ${0:// other items}
 );
 endsnippet
 
 snippet foreach "foreach()"
-foreach (${1:$array} ${2:as ${3:$item}}) {
-  ${0: // loop}
+foreach ($${1:array} as $${2:item}${3: => $${4:value}}) {
+  ${0:// loop}
 }
+endsnippet
+
+snippet cm "multiline comment"
+/*
+ * $0
+ */
 endsnippet
