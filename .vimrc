@@ -108,6 +108,8 @@ noremap  <C-]> g<C-]>
 " Disable highlighting of search terms
 noremap ,n :noh<CR>
 
+set wildignore+=*/__pycache__/*,*.pyc,*.swp,*.zip
+
 " Window switching, resizing and moving
 " Alt+key switches to the window
 map <A-h> <C-W>h
