@@ -41,9 +41,9 @@ autocmd BufRead,BufNewFile *.haml set filetype=haml
 
 " indentation settings
 set expandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set bs=2 " Backspace, this is the same as :set backspace=indent,eol,start.
 set autoindent
 set smartindent
