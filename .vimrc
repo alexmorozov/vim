@@ -37,6 +37,7 @@ augroup drupal
 augroup END
 
 autocmd BufRead,BufNewFile *.md set filetype=markdown
+autocmd BufRead,BufNewFile *.haml set filetype=haml
 
 " indentation settings
 set expandtab
