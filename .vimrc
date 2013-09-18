@@ -38,6 +38,7 @@ augroup END
 
 autocmd BufRead,BufNewFile *.md set filetype=markdown
 autocmd BufRead,BufNewFile *.haml set filetype=haml
+autocmd BufRead,BufNewFile *.less set filetype=less
 
 " indentation settings
 set expandtab
