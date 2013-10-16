@@ -36,9 +36,11 @@ augroup drupal
   autocmd BufRead,BufNewFile *.drush set filetype=php
 augroup END
 
-autocmd BufRead,BufNewFile *.md set filetype=markdown
-autocmd BufRead,BufNewFile *.haml set filetype=haml
-autocmd BufRead,BufNewFile *.less set filetype=less
+autocmd BufRead,BufNewFile *.md setf markdown
+autocmd BufRead,BufNewFile *.haml setf haml
+autocmd BufRead,BufNewFile *.less setf less
+autocmd BufNewFile,BufRead *.sass setf sass
+autocmd BufNewFile,BufRead *.scss setf scss
 
 " indentation settings
 set expandtab
@@ -175,3 +177,7 @@ let g:showmarks_enable=0
 let g:showmarks_textlower="\t"
 let g:showmarks_textother="\t"
 let g:showmarks_textupper="\t"
+
+" Python mode configuration
+let g:pymode_lint_ignore = ""
+let g:pymode_folding = 0
