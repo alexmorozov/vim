@@ -4,5 +4,21 @@ $0
 endsnippet
 
 snippet pdb "set pdb breakpoint"
-import pdb; pdb.set_trace()
+import ipdb; ipdb.set_trace()
+endsnippet
+
+snippet cls "class defiinition"
+class ${1:ClassName}(${2:object}):
+    """
+    ${3:docstring}
+    """
+    $0
+endsnippet
+
+# Django stuff
+snippet ctx "get_context_data()"
+def get_context_data(self, **kwargs):
+    ctx = super($1, self).get_context_data(**kwargs)
+    $0
+    return ctx
 endsnippet
