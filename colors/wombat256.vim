@@ -247,9 +247,9 @@ call <SID>X("Visual",		"ecee90",	"597418",	"none")
 call <SID>X("LineNr",		"857b6f",	"121212",	"none")
 call <SID>X("Folded",		"a0a8b0",	"404048",	"none")
 call <SID>X("Title",		"f6f3e8",	"",			"bold")
-call <SID>X("VertSplit",	"444444",	"444444",	"none")
-call <SID>X("StatusLine",	"f6f3e8",	"444444",	"italic")
-call <SID>X("StatusLineNC",	"857b6f",	"444444",	"none")
+call <SID>X("VertSplit",	"22222",	"121212",	"none")
+call <SID>X("StatusLine",	"f6f3e8",	"121212",	"italic")
+call <SID>X("StatusLineNC",	"857b6f",	"121212",	"none")
 			"Scrollbar
 			"Tooltip
 			"Menu
