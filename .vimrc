@@ -70,6 +70,8 @@ set foldmethod=indent   "fold based on indent
 set foldnestmax=1      "deepest fold is 1 level
 set foldlevel=1         "this is just what i use
 
+noremap <space> za
+
 " Highlight trailing spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 au ColorScheme * highlight ExtraWhitespace guibg=red
@@ -170,7 +172,7 @@ map 0 :b10<CR>
 
 " Piece-wise copying of the line above.
 " Stolen at http://www.slideshare.net/ZendCon/vim-for-php-programmers-presentation
-imap <C-l> @@@<ESC>hhkywjl?@@@<CR>P/@@@<CR>3s
+"imap <C-l> @@@<ESC>hhkywjl?@@@<CR>P/@@@<CR>3s
 
 " Showmarks configuration
 let g:showmarks_enable=0
@@ -180,4 +182,6 @@ let g:showmarks_textupper="\t"
 
 " Python mode configuration
 let g:pymode_lint_ignore = ""
-let g:pymode_folding = 0
+let g:pymode_folding = 1
+
+noremap <C-l> :update<cr>
