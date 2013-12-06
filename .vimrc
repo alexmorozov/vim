@@ -42,6 +42,8 @@ autocmd BufRead,BufNewFile *.less setf less
 autocmd BufNewFile,BufRead *.sass setf sass
 autocmd BufNewFile,BufRead *.scss setf scss
 
+autocmd BufNewFile,BufRead *.sls setf yaml
+
 " indentation settings
 set expandtab
 set tabstop=4
