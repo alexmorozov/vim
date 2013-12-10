@@ -1,1 +1,1 @@
-noremap <c-l> :w<CR>:!ruby -c %<CR>
+"noremap <c-l> :w<CR>:!ruby -c %<CR>
