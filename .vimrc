@@ -187,3 +187,5 @@ let g:pymode_lint_ignore = ""
 let g:pymode_folding = 1
 
 noremap <C-l> :update<cr>
+
+let g:ctrlp_cmd='CtrlPMixed'
