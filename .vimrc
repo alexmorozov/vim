@@ -189,3 +189,7 @@ let g:pymode_folding = 1
 noremap <C-l> :update<cr>
 
 let g:ctrlp_cmd='CtrlPMixed'
+
+" Per-project .vimrc
+set exrc
+set secure
