@@ -20,6 +20,10 @@ set ignorecase
 set smartcase
 syntax on
 
+set noswapfile
+set nobackup
+set nowritebackup
+
 filetype plugin on
 filetype plugin indent on
 
@@ -142,6 +146,10 @@ map K <C-W>K
 map <A-S-L> <C-W>L
 map L <C-W>L
 
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
+
 " Keypad resizes the windows
 map Om <C-W>+
 map OS <C-W>-
@@ -189,6 +197,18 @@ let g:pymode_folding = 1
 noremap <C-l> :update<cr>
 
 let g:ctrlp_cmd='CtrlPMixed'
+"
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+" Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+" ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 " Per-project .vimrc
 set exrc
