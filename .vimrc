@@ -210,6 +210,10 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
+" Sort Python imports
+command! -range=% Isort :<line1>,<line2>! isort -w 80 -
+noremap ,i :Isort<CR>
+
 " Per-project .vimrc
 set exrc
 set secure
