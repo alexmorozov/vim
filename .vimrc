@@ -123,6 +123,10 @@ noremap  <C-]> g<C-]>
 " Disable highlighting of search terms
 noremap ,n :noh<CR>
 
+" Close window
+noremap ,q :q<CR>
+
+
 set wildignore+=*/__pycache__/*,*.pyc,*.swp,*.zip
 
 " Window switching, resizing and moving
@@ -195,6 +199,7 @@ let g:pymode_lint_ignore = ""
 let g:pymode_folding = 1
 
 noremap <C-l> :update<cr>
+noremap ,p :set paste!<cr>
 
 let g:ctrlp_cmd='CtrlPMixed'
 "
