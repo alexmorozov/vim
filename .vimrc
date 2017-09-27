@@ -133,12 +133,19 @@ set wildignore+=*/__pycache__/*,*.pyc,*.swp,*.zip
 " Alt+key switches to the window
 map <A-h> <C-W>h
 map h <C-W>h
+noremap ˙ <C-W>h
+
 map <A-j> <C-W>j
 map j <C-W>j
+noremap ∆ <C-W>j
+
 map <A-k> <C-W>k
 map k <C-W>k
+noremap ˚ <C-W>k
+
 map <A-l> <C-W>l
 map l <C-W>l
+noremap ¬ <C-W>l
 
 " Alt+Shift+key moves the window
 map <A-S-H> <C-W>H
@@ -222,3 +229,11 @@ noremap ,i :Isort<CR>
 " Per-project .vimrc
 set exrc
 set secure
+
+set guifont=Menlo\ Regular:h14
+set guicursor+=a:blinkon0
+
+imap ˙ <esc>h
+imap ∆ <esc>j
+imap ˚ <esc>k
+imap ¬ <esc>l
