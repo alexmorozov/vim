@@ -229,11 +229,3 @@ noremap ,i :Isort<CR>
 " Per-project .vimrc
 set exrc
 set secure
-
-set guifont=Menlo\ Regular:h14
-set guicursor+=a:blinkon0
-
-imap ˙ <esc>h
-imap ∆ <esc>j
-imap ˚ <esc>k
-imap ¬ <esc>l
